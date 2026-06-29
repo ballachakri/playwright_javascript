@@ -1,21 +1,17 @@
 import { expect } from '@playwright/test';
 import CommonActions from '../utils/CommonActions';
 
-export default class LoginPage {
+export default class LoginPage extends CommonActions{
 
     constructor(page) {
-        this.actions = new CommonActions(page);
+        super(page);
         this.usernameLocator = "input[id='username']";
         this.passwordLocator = "input[id='password']";
     }
 
-    async navigate(url) {
-        await this.actions.navigateTo(url);
-    }
-
     async userlogin(username, password) {
-        await this.actions.enterText(this.usernameLocator, username);
-        await this.actions.enterText(this.passwordLocator, password);
-        await this.actions.click("button[type='submit']");
+        await this.enterText(this.usernameLocator, username);
+        await this.enterText(this.passwordLocator, password);
+        await this.click("button[type='submit']");
     }
 }

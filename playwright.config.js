@@ -26,7 +26,7 @@ export default defineConfig({
   // reporter: 'html',
   reporter: [
     ['list'],
-    ['html', { open: 'never' }], // for local change to 'always'
+    ['html', { open: 'always' }], // for local change to 'always' for github actions make 'never'
     ['allure-playwright']
   ],
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
@@ -37,7 +37,7 @@ export default defineConfig({
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
     video: "on",
-    headless: true,
+    headless: false,
 
   },
 
