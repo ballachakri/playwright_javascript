@@ -2,8 +2,12 @@ name: Playwright Tests
 
 on:
   push:
-    branches: [main]
+    branches: [main, master]
   pull_request:
+    branches: [main, master]
+  # Daily scheduled main branch run (04:00 AM UTC)
+  schedule:
+    - cron: '0 4 * * *'  
 
 jobs:
   test:
@@ -60,5 +64,5 @@ jobs:
       - name: Upload Allure Report
         uses: actions/upload-artifact@v4
         with:
-          name: allure-report
+          name: allure-report-${{ github.head_ref || github.ref_name }}
           path: allure-report
