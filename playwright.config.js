@@ -26,7 +26,9 @@ export default defineConfig({
   // reporter: 'html',
   reporter: [
     ['list'],
-    ['html', { open: 'never' }], // for local change to 'always' for github actions make 'never'
+    ['html', { 
+      outputFolder: 'playwright-report',
+      open: 'never' }], // for local change to 'always' for github actions make 'never'
     ['allure-playwright']
   ],
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
