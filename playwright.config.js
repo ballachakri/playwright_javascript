@@ -44,7 +44,7 @@ export default defineConfig({
   /* Configure projects for major browsers */
   projects: [
     {
-      name: 'chromium',
+      name: 'Playwright JavaScript',
       use: { ...devices['Desktop Chrome'] },
     },
 

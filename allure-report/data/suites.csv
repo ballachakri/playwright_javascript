@@ -1,5 +1,2 @@
 "DESCRIPTION","DURATION IN MS","NAME","PARENT SUITE","START TIME","STATUS","STOP TIME","SUB SUITE","SUITE","TEST CLASS","TEST METHOD"
-"","3007","Uncheck - > checked","chromium","2026-06-29","passed","2026-06-29","Check boxes tests","CheckboxesTests.spec.js","",""
-"","2865","Check - > unchecked","chromium","2026-06-29","passed","2026-06-29","Check boxes tests","CheckboxesTests.spec.js","",""
-"","2729","Invalid User Login","chromium","2026-06-29","passed","2026-06-29","Login Tests","LoginTests.spec.js","",""
-"","4211","Valid User Login","chromium","2026-06-29","passed","2026-06-29","Login Tests","LoginTests.spec.js","",""
+"","213","Get all users from page 1","chromium","2026-06-30","passed","2026-06-30","","apiTests.spec.js","",""
