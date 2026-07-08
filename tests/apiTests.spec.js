@@ -18,7 +18,7 @@ test('Get all users from page 1', async ({ request }) => {
 });
 
 
-test.only('Create User using POST Request', async ({ request }) => {
+test('Create User using POST Request', async ({ request }) => {
 
     const newUser = {
         name: "John",
