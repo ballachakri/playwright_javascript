@@ -8,7 +8,7 @@ test.describe('Login Tests', async () => {
 
     test.beforeEach(async ({ page }) => {
         pm = new PomManager(page);
-        await pm.loginpage.navigateTo("https://the-internet.herokuapp.com/login");
+        await pm.loginpage.navigateTo("/login");
     })
 
     test.afterEach(async ({ page }) => {

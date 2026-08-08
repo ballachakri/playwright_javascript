@@ -1,0 +1,24 @@
+pipeline {
+    agent any
+    tools { nodejs 'NodeJS-LTS' }
+    environment {
+        ALLURE_RESULTS = 'allure-results'
+    }
+    stages {
+        stage('Checkout') { steps { checkout scm } }
+        stage('Install') { steps { sh 'npm ci' } }
+        stage('Browsers') { steps { sh 'npx playwright install --with-deps' } }
+        stage('Run Tests') {
+            steps { sh 'npm test' }
+            post { always { archiveArtifacts artifacts: 'allure-results/**/*', allowEmptyArchive: true } }
+        }
+        stage('Allure Report') {
+            steps { sh 'npx allure-commandline generate allure-results -o allure-report --clean' }
+        }
+        stage('Publish Report') {
+            steps {
+                script { allure([results: [[path: 'allure-results']], reportBuildPolicy: 'ALWAYS']) }
+            }
+        }
+    }
+}

@@ -8,7 +8,7 @@ test.describe('Check boxes tests', () => {
 
     test.beforeEach(async ({ page }) => {
         pm = new PomManager(page);
-        await pm.checkboxespage.navigateTo("https://the-internet.herokuapp.com/checkboxes");
+        await pm.checkboxespage.navigateTo("/checkboxes");
     })
 
     test.afterEach(async ({ page }) => {
