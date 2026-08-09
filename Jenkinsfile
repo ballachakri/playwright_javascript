@@ -27,19 +27,19 @@ pipeline {
 
         stage('Install Dependencies') {
             steps {
-                sh 'npm ci'
+                bat 'npm install'
             }
         }
 
         stage('Install Playwright Browsers') {
             steps {
-                sh 'npx playwright install --with-deps'
+                bat 'npx playwright install --with-deps'
             }
         }
 
         stage('Run Playwright Tests') {
             steps {
-                sh 'npx playwright test --reporter=allure-playwright,html'
+                bat 'npx playwright test --reporter=allure-playwright,html'
             }
             post {
                 always {
@@ -51,11 +51,11 @@ pipeline {
 
         stage('Generate Allure Report') {
             steps {
-                sh 'npx allure-commandline generate allure-results -o allure-report --clean'
+                bat 'npx allure-commandline generate allure-results -o allure-report --clean'
             }
         }
 
-        stage('Publish Allure Report') {
+        stage('Publibat Allure Report') {
             steps {
                 script {
                     allure([
@@ -70,7 +70,7 @@ pipeline {
 
     post {
         always {
-            echo '📊 Allure Report should now be available in the left sidebar!'
+            echo '📊 Allure Report batould now be available in the left sidebar!'
         }
         success {
             echo '✅ All tests passed!'
