@@ -20,15 +20,21 @@ pipeline {
 
     stages {
         stage('Checkout Code') {
-            steps { checkout scm }
+            steps {
+                checkout scm
+            }
         }
 
         stage('Install Dependencies') {
-            steps { sh 'npm ci' }
+            steps {
+                sh 'npm ci'
+            }
         }
 
         stage('Install Playwright Browsers') {
-            steps { sh 'npx playwright install --with-deps' }
+            steps {
+                sh 'npx playwright install --with-deps'
+            }
         }
 
         stage('Run Playwright Tests') {
@@ -48,24 +54,29 @@ pipeline {
                 sh 'npx allure-commandline generate allure-results -o allure-report --clean'
             }
         }
-    }
 
-    // ✅ PUBLISH REPORT IN POST SECTION — ALWAYS RUNS!
-    post {
-        always {
-            stage('Publish Allure Report') {
-                steps {
-                    script {
-                        allure([
-                            results: [[path: 'allure-results']],
-                            reportBuildPolicy: 'ALWAYS',
-                            includeProperties: false
-                        ])
-                    }
+        stage('Publish Allure Report') {
+            steps {
+                script {
+                    allure([
+                        results: [[path: 'allure-results']],
+                        reportBuildPolicy: 'ALWAYS',
+                        includeProperties: false
+                    ])
                 }
             }
         }
-        success { echo '✅ All tests passed!' }
-        failure { echo '❌ Some tests failed — Allure Report is below ↓' }
+    }
+
+    post {
+        always {
+            echo '📊 Allure Report should now be available in the left sidebar!'
+        }
+        success {
+            echo '✅ All tests passed!'
+        }
+        failure {
+            echo '❌ Some tests failed — check Allure Report in the sidebar.'
+        }
     }
 }
