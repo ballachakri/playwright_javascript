@@ -20,21 +20,15 @@ pipeline {
 
     stages {
         stage('Checkout Code') {
-            steps {
-                checkout scm
-            }
+            steps { checkout scm }
         }
 
         stage('Install Dependencies') {
-            steps {
-                bat 'npm install'
-            }
+            steps { bat 'npm install' }
         }
 
         stage('Install Playwright Browsers') {
-            steps {
-                bat 'npx playwright install --with-deps'
-            }
+            steps { bat 'npx playwright install --with-deps' }
         }
 
         stage('Run Playwright Tests') {
@@ -55,7 +49,7 @@ pipeline {
             }
         }
 
-        stage('Publibat Allure Report') {
+        stage('Publish Allure Report') {
             steps {
                 script {
                     allure([
@@ -70,13 +64,17 @@ pipeline {
 
     post {
         always {
-            echo '📊 Allure Report batould now be available in the left sidebar!'
+            // ✅ PLAYWRIGHT HTML REPORT — appears in sidebar!
+            publishHTML([
+                allowMissing: true,
+                alwaysLinkToLastBuild: true,
+                keepAll: true,
+                reportDir: 'playwright-report',
+                reportFiles: 'index.html',
+                reportName: 'Playwright HTML Report'
+            ])
         }
-        success {
-            echo '✅ All tests passed!'
-        }
-        failure {
-            echo '❌ Some tests failed — check Allure Report in the sidebar.'
-        }
+        success { echo '✅ All tests passed!' }
+        failure { echo '❌ Check reports below.' }
     }
 }
