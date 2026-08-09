@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     tools {
-        nodejs 'NodeJS-LTS'   // ← Must match EXACT name from Step 2
+        nodejs 'NodeJS-LTS'
     }
 
     environment {
@@ -15,26 +15,20 @@ pipeline {
     }
 
     triggers {
-        cron('H 4 * * *') // Daily at 04:00 UTC (optional)
+        cron('H 4 * * *')
     }
 
     stages {
         stage('Checkout Code') {
-            steps {
-                checkout scm
-            }
+            steps { checkout scm }
         }
 
         stage('Install Dependencies') {
-            steps {
-                sh 'npm ci'
-            }
+            steps { sh 'npm ci' }
         }
 
         stage('Install Playwright Browsers') {
-            steps {
-                sh 'npx playwright install --with-deps'
-            }
+            steps { sh 'npx playwright install --with-deps' }
         }
 
         stage('Run Playwright Tests') {
@@ -44,32 +38,34 @@ pipeline {
             post {
                 always {
                     archiveArtifacts artifacts: 'playwright-report/**/*', allowEmptyArchive: true
-                    archiveArtifacts artifacts: "${ALLURE_RESULTS}/**/*", allowEmptyArchive: true
+                    archiveArtifacts artifacts: 'allure-results/**/*', allowEmptyArchive: true
                 }
             }
         }
 
         stage('Generate Allure Report') {
             steps {
-                sh 'npx allure-commandline generate ${ALLURE_RESULTS} -o ${ALLURE_REPORT} --clean'
-            }
-        }
-
-        stage('Publish Allure Report') {
-            steps {
-                script {
-                    allure([
-                        results: [[path: "${ALLURE_RESULTS}"]],
-                        reportBuildPolicy: 'ALWAYS',
-                        includeProperties: false
-                    ])
-                }
+                sh 'npx allure-commandline generate allure-results -o allure-report --clean'
             }
         }
     }
 
+    // ✅ PUBLISH REPORT IN POST SECTION — ALWAYS RUNS!
     post {
+        always {
+            stage('Publish Allure Report') {
+                steps {
+                    script {
+                        allure([
+                            results: [[path: 'allure-results']],
+                            reportBuildPolicy: 'ALWAYS',
+                            includeProperties: false
+                        ])
+                    }
+                }
+            }
+        }
         success { echo '✅ All tests passed!' }
-        failure { echo '❌ Some tests failed — check Allure Report below.' }
+        failure { echo '❌ Some tests failed — Allure Report is below ↓' }
     }
 }
