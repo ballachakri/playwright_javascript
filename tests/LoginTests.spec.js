@@ -1,10 +1,13 @@
 import { test, expect } from '@playwright/test';
+import { Hooks } from '../hooks/Hooks'
 import { allure } from 'allure-playwright';
 import LoginPage from '../pages/LoginPage.js';
 import SecurePage from '../pages/SecurePage.js';
 
+Hooks.setupHooks();
+
 test.describe('Login Tests', () => {
-    
+
     let loginPage;
     let securePage;
 
@@ -12,12 +15,6 @@ test.describe('Login Tests', () => {
         loginPage = new LoginPage(page);
         securePage = new SecurePage(page);
         await loginPage.navigateTo("/login");
-    });
-
-    test.afterEach(async ({ page }) => {
-        const scr = await page.screenshot();
-        await allure.attachment('Test Screenshot', scr, 'image/png');
-        await page.close();
     });
 
     test('Valid User Login', async () => {
@@ -36,7 +33,7 @@ test.describe('Login Tests', () => {
         await loginPage.enterUserName('invalidUser');
         await loginPage.enterPassword('invalidPassword!');
         await loginPage.clickSubmitButton();
-        
+
         // Assertion from SecurePage
         await securePage.verifyUserLoggedIn('Your username is invalid!');
         // Direct assertion
