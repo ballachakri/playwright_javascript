@@ -1,15 +1,15 @@
 import { expect } from '@playwright/test';
-import CommonActions from '../utils/CommonActions';
 
 
-export default class SecurePage extends CommonActions{
+export default class SecurePage{
+
     constructor(page) {
-        super(page);
-        this.messageLocator = "div[id='flash']";
+        this.page = page;
+        this.messageLocator = page.locator("div[id='flash']");
     }
 
     async getMessage() {
-          return await this.getText(this.messageLocator);
+          return await this.messageLocator.textContent();
     }
 
     async verifyUserLoggedIn(expectedMessage) {

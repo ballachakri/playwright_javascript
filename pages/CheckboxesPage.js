@@ -1,27 +1,31 @@
 import { expect } from '@playwright/test';
-import CommonActions from '../utils/CommonActions';
 
-export default class CheckboxesPage extends CommonActions{
+export default class CheckboxesPage {
 
     constructor(page) {
-        super(page); 
-        this.uncheckedLocator = "input[type='checkbox']:first-child";
-        this.checkedLocator = "input[type='checkbox']:last-child";
+        this.page = page;
+        this.uncheckedLocator = page.locator("input[type='checkbox']:first-child");
+        this.checkedLocator = page.locator("input[type='checkbox']:last-child");
+    }
+
+
+        async navigateTo(path){
+        await this.page.goto(path);
     }
 
     async clickUnCheckBox() {
-        await this.page.click(this.uncheckedLocator);
+        await this.uncheckedLocator.click();
     }
 
     async clickCheckedBox() {
-        await this.page.click(this.checkedLocator);
+        await this.checkedLocator.click();
     }
 
     async isFirstBoxChecked() {
-        return await this.page.isChecked(this.uncheckedLocator);
+        return await this.uncheckedLocator.isChecked();
     }
 
     async isSecondBoxChecked() {
-        return await this.page.isChecked(this.checkedLocator);
+        return await this.checkedLocator.isChecked();
     }
 }

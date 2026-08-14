@@ -1,14 +1,14 @@
 import { test, expect } from '@playwright/test';
 import { allure } from 'allure-playwright';
-import PomManager from '../pom_manager/PomManager';
-
-let pm;
+import CheckboxesPage from '../pages/CheckboxesPage';
 
 test.describe('Check boxes tests', () => {
 
+    let checkboxespage;
+
     test.beforeEach(async ({ page }) => {
-        pm = new PomManager(page);
-        await pm.checkboxespage.navigateTo("/checkboxes");
+        checkboxespage = new CheckboxesPage(page)
+        await checkboxespage.navigateTo("/checkboxes");
     })
 
     test.afterEach(async ({ page }) => {
@@ -18,12 +18,12 @@ test.describe('Check boxes tests', () => {
     })
 
     test('Check - > unchecked', async () => {
-        await pm.checkboxespage.clickUnCheckBox();
-        expect(await pm.checkboxespage.isFirstBoxChecked()).toBe(true);
+        await checkboxespage.clickUnCheckBox();
+        expect(await checkboxespage.isFirstBoxChecked()).toBe(true);
     })
 
     test('Uncheck - > checked', async () => {
-        await pm.checkboxespage.clickCheckedBox();
-        expect(await pm.checkboxespage.isSecondBoxChecked()).toBe(false);
+        await checkboxespage.clickCheckedBox();
+        expect(await checkboxespage.isSecondBoxChecked()).toBe(false);
     })
 });
